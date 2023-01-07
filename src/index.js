@@ -8,7 +8,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     {/* <h1>Hello, world</h1> */}
-    <App />
+    <div style={{maxWidth: "375px", margin: 'auto'}}>
+      <App />
+    </div>
   </React.StrictMode>
 );
 
