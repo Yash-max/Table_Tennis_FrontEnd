@@ -1,7 +1,10 @@
 import { Button, Card, Checkbox, FormControl, FormControlLabel, FormGroup, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 
-const Signup = () => {
+const Signup = ({callback}) => {
+
+    const handleCallback = (state) => callback(state);
+
     return (<>
         <Card variant="outlined">
             <div style={{ padding: '45px' }}>
@@ -27,10 +30,10 @@ const Signup = () => {
                 <TextField fullWidth id="outlined-basic" label="Confirm Password" variant="outlined" style={{ fontWeight: '400', fontSize: '14px', lineHeight: '19px', color: '#343435' }} />
             </div>
             <div style={{ paddingBottom: '22px' }}>
-                <div><Button variant="contained" disabled style={{ paddingTop: '13px', paddingRight: '75px', paddingBottom: '11px', paddingLeft: '76px', marginBottom: '37px' }}>Continue</Button></div>
+                <div><Button variant="contained" disabled style={{ paddingTop: '13px', paddingRight: '75px', paddingBottom: '11px', paddingLeft: '76px', marginBottom: '37px' }} onClick={() => handleCallback('continueToHome')}>Continue</Button></div>
                 <div>
                     <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '19px', color: '#343435' }}>Already have an account?</span>
-                    <Button variant="text" style={{ fontWeight: '400', fontSize: '14px', lineHeight: '19px', textTransform: 'none'}}>Login</Button></div>
+                    <Button variant="text" style={{ fontWeight: '400', fontSize: '14px', lineHeight: '19px', textTransform: 'none'}} onClick={() => handleCallback('login')}>Login</Button></div>
             </div>
         </Card>
     </>);

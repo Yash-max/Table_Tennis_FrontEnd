@@ -1,7 +1,10 @@
 import { Button, Card, Checkbox, FormControl, FormControlLabel, FormGroup, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 
-const Login = () => {
+const Login = ({callback}) => {
+
+    const handleCallback = (state) => callback(state);
+    
     return (<>
         <Card variant="outlined">
             <div style={{ padding: '45px'}}>
@@ -9,14 +12,14 @@ const Login = () => {
                 <TextField fullWidth id="outlined-basic" label="Email ID" variant="outlined" style={{ fontWeight: '400', fontSize: '14px', lineHeight: '19px', color: '#343435', marginBottom: '34px' }} />
                 <TextField fullWidth id="outlined-basic" label="Enter Password" variant="outlined" style={{ fontWeight: '400', fontSize: '14px', lineHeight: '19px', color: '#343435', marginBottom: '7px' }} />
                 <div style={{textAlign: 'right'}}>
-                <Button variant="text" style={{ fontWeight: '400', fontSize: '14px', lineHeight: '19px', textTransform: 'none', textAlign: 'right'}}>Forget Password?</Button>
+                <Button variant="text" style={{ fontWeight: '400', fontSize: '14px', lineHeight: '19px', textTransform: 'none', textAlign: 'right'}} onClick={()=>handleCallback('forgetPassword')}>Forget Password?</Button>
                 </div>
             </div>
             <div style={{ paddingBottom: '22px' }}>
                 <div><Button variant="contained" disabled style={{ paddingTop: '13px', paddingRight: '75px', paddingBottom: '11px', paddingLeft: '76px', marginBottom: '180px' }}>Continue</Button></div>
                 <div>
                     <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '19px', color: '#343435' }}>New Here?</span>
-                    <Button variant="text" style={{ fontWeight: '400', fontSize: '14px', lineHeight: '19px', textTransform: 'none'}}>Signup</Button>
+                    <Button variant="text" style={{ fontWeight: '400', fontSize: '14px', lineHeight: '19px', textTransform: 'none'}} onClick={()=>handleCallback('signup')}>Signup</Button>
                 </div>
             </div>
         </Card>
