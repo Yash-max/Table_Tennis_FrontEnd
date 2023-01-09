@@ -28,6 +28,35 @@ const Login = () => {
         return re.test(password);
     }
 
+    const makeRequest = async (url) => {
+
+        let resp;
+
+        await fetch('http://localhost:8080' + url, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'email': email,
+                'password': password
+            })
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                resp = data;
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+
+        return resp;
+    }
+
     function continueToSignup() {
 
         let isEmailValid = false;
@@ -51,9 +80,14 @@ const Login = () => {
 
         if (!isEmailValid || !isPasswordValid) return;
 
-        console.log("Transfer To Signup");
-
-        navigation("/signup", { state: { "email": email, "password": password } });
+        makeRequest('/login').then((resp) => {
+            console.log(resp);
+            if (resp.success) {
+                navigation("/signup", { state: { "email": email, "password": password } });
+            } else {
+                console.log("Invalid UserName & Password");
+            }
+        });
     }
 
     return (<>
