@@ -1,4 +1,4 @@
-import { Button, Card, TextField } from "@mui/material";
+import { Button, Card, Slide, Snackbar, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -13,9 +13,13 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [isPasswordValid, setIsPasswordValid] = useState(true);
 
+    const [errorMessage, setErrorMessage] = useState('Something went wrong');
+
     useEffect(() => {
-        console.log("Got From To Signup")
-        if (location != null && location.state != null && location.state.email != null) setEmail(location.state.email)
+        if (location != null && location.state != null && location.state.email != null) {
+            console.log("Got From To Signup")
+            setEmail(location.state.email)
+        }
     }, [])
 
     function validateEmail(email) {
@@ -39,10 +43,14 @@ const Login = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                'email': email,
-                'password': password
-            })
+            body: JSON.stringify(
+                {
+                    'data': {
+                        'email': email,
+                        'password': password
+                    }
+                }
+            )
         })
             .then((response) => {
                 return response.json()
@@ -51,7 +59,8 @@ const Login = () => {
                 resp = data;
             })
             .catch((err) => {
-                console.log(err);
+                console.log('Error : ', err);
+                throw new Error('Something went wrong');
             })
 
         return resp;
@@ -85,10 +94,30 @@ const Login = () => {
             if (resp.success) {
                 navigation("/signup", { state: { "email": email, "password": password } });
             } else {
-                console.log("Invalid UserName & Password");
+                setErrorMessage(resp.message);
+                handleClick(TransitionRight);
             }
+        }).catch((err) => {
+            setErrorMessage('Something went wrong');
+            handleClick(TransitionRight);
         });
     }
+
+    function TransitionRight(props) {
+        return <Slide {...props} direction="right" />;
+    }
+
+    const [open, setOpen] = useState(false);
+    const [transition, setTransition] = useState(undefined);
+
+    const handleClick = (Transition) => {
+        setTransition(() => Transition);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (<>
         <Card variant="outlined">
@@ -129,6 +158,14 @@ const Login = () => {
                 </div>
             </div>
         </Card>
+        <Snackbar
+            open={open}
+            onClose={handleClose}
+            TransitionComponent={transition}
+            message={errorMessage}
+            key={transition ? transition.name : ''}
+            autoHideDuration={5000}
+        />
     </>);
 };
 export default Login;
